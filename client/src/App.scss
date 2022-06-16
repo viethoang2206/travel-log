@@ -1,0 +1,18 @@
+.App{
+  .container{
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+ 
+  .content{
+    margin-top: 50px;
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+    //justify-content: center;
+    //align-items: center;
+    .feed{
+      width: 50%;
+    }
+  }
+}
