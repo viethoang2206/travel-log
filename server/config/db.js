@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-const connectDB = () => {
-  mongoose
-    .connect("mongodb://localhost:27017/travel")
+const connectDB = async () => {
+  await mongoose
+    .connect(
+      `mongodb+srv://admin:root@cluster0.tsd2mac.mongodb.net/travels?retryWrites=true&w=majority`
+    )
     .then(() => {
       console.log("connected to DB");
     })
     .catch((err) => {
-      console.log("cant connect");
+      console.log(err);
     });
 };
 
