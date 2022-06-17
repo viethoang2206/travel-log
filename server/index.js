@@ -11,12 +11,12 @@ app.use(
 connectDB();
 app.use(cors());
 app.use("/api/v1/travel", travelRoute);
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World");
+// });
 app.use(cors());
 app.listen(5001, function () {
-  console.log("CORS-enabled web server listening on port 80");
+  console.log("CORS-enabled web server listening on port 5001");
 });
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, (err) => {
