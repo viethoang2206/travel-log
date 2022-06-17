@@ -19,7 +19,7 @@ app.listen(80, function () {
   console.log("CORS-enabled web server listening on port 80");
 });
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, (err) => {
   if (err) throw err;
   console.log(`Server is running on port ${PORT}`);
 });
