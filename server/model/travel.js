@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const travel = new Schema({
+  user: String,
   title: String,
   message: String,
   creator: String,

@@ -1,21 +1,41 @@
-import { SUBMIT, GETPOST, DELETEPOST, SAVEEDIT, INC } from "../actions/type";
+import {
+  SUBMIT,
+  GETPOST,
+  DELETEPOST,
+  SAVEEDIT,
+  INC,
+  GETALLPOST,
+  GETTITLE,
+  STARTLOADING,
+  ENDLOADING,
+} from "../actions/type";
 const newPost = {};
-const allPost = [];
+const allPost = {
+  isLoading: true,
+  post: [],
+};
 const postReducer = (state = allPost, action) => {
   switch (action.type) {
+    case STARTLOADING:
+      return { ...state, isLoading: true };
+    case ENDLOADING:
+      return { ...state, isLoading: false };
+    case GETALLPOST:
+      console.log(action.payload);
+      return { ...state, post: action.payload };
     case SUBMIT:
       const { payload, value } = action;
       console.log(payload);
-      return [...state, ...payload];
+      return { ...state, post: payload };
 
     case GETPOST:
       const { newTravel } = action;
 
-      return [...newTravel];
+      return { ...state, post: newTravel };
     case SAVEEDIT:
       const { post } = action;
       const postID = post.id;
-      const { creator, message, title, tag } = post;
+      const { message, title, tag } = post;
       console.log(tag);
       const newTag = tag
         .join()
@@ -25,7 +45,6 @@ const postReducer = (state = allPost, action) => {
         });
       const newState = state.filter((val) => {
         if (val._id === postID) {
-          val.creator = creator;
           val.message = message;
           val.title = title;
           val.tags = newTag;
@@ -33,11 +52,11 @@ const postReducer = (state = allPost, action) => {
         return val;
       });
       console.log(newState);
-      return [...newState];
+      return { ...state, post: newState };
     case DELETEPOST:
       const { id } = action;
       const delPost = state.filter((val) => val._id !== id);
-      return [...delPost];
+      return { ...state, post: delPost };
     case INC:
       const countID = action.id;
       const count = action.newCount;
@@ -49,7 +68,13 @@ const postReducer = (state = allPost, action) => {
         return val;
       });
 
-      return [...countState];
+      return { ...state, post: countState };
+    case GETTITLE:
+      console.log(state);
+      console.log(action.post);
+
+      return { ...state, post: action.post };
+
     default:
       return state;
   }

@@ -2,6 +2,16 @@ const { json } = require("express");
 const Travel = require("../model/travel");
 
 exports.getTravel = async (req, res) => {
+  const { id } = req.params;
+
+  const travel = await Travel.find({ user: id }).catch((err) => {
+    res.status(404).json({
+      success: false,
+    });
+  });
+  res.json({ success: true, travel });
+};
+exports.getAllTravel = async (req, res) => {
   const travel = await Travel.find().catch((err) => {
     res.status(404).json({
       success: false,
@@ -9,10 +19,10 @@ exports.getTravel = async (req, res) => {
   });
   res.json({ success: true, travel });
 };
-
 exports.createTravel = async (req, res) => {
   const { creator, title, message, tags, selectedFile } = req.body;
   const newTravel = await Travel.create({
+    user: req.user.id,
     creator,
     title,
     message,
@@ -39,17 +49,16 @@ exports.createTravel = async (req, res) => {
 
 exports.editTravel = async (req, res) => {
   const { id } = req.params;
-  const { creator, title, message, tags, selectedFile } = req.body;
+  const { title, message, tags, selectedFile } = req.body;
   const user = Travel.find({ _id: id });
-  Travel.findByIdAndUpdate(
-    { _id: id },
-    { creator, title, message, tags }
-  ).catch((err) => {
-    res.status(400).json({
-      success: false,
-      message: "cant update",
-    });
-  });
+  Travel.findByIdAndUpdate({ _id: id }, { title, message, tags }).catch(
+    (err) => {
+      res.status(400).json({
+        success: false,
+        message: "cant update",
+      });
+    }
+  );
   res.json({
     success: true,
     message: "updated",
@@ -99,5 +108,19 @@ exports.updateCount = async (req, res) => {
   res.json({
     success: true,
     message: "item has been updated",
+  });
+};
+exports.findTitle = async (req, res) => {
+  const { searchQuery } = req.query;
+  const post = await Travel.find({ title: searchQuery }).catch((err) => {
+    res.status(404).json({
+      success: false,
+      message: "Post does not exist",
+    });
+  });
+
+  res.json({
+    success: true,
+    message: post,
   });
 };

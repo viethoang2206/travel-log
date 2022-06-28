@@ -2,6 +2,7 @@ const express = require("express");
 //const { PORT } = require("./config");
 const connectDB = require("./config/db");
 const travelRoute = require("./routes/travelRoute");
+const userRoute = require("./routes/userRoute");
 const app = express();
 const cors = require("cors");
 app.use(express.json({ limit: "30mb" }));
@@ -10,6 +11,7 @@ app.use(
 );
 connectDB();
 app.use(cors());
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/travel", travelRoute);
 // app.get("/", (req, res) => {
 //   res.send("Hello World");

@@ -5,3 +5,13 @@ export const EDITPOST = "EDITPOST";
 export const GETPOST = "GETPOST";
 export const DELETEPOST = "DELETPOST";
 export const SAVEEDIT = "SAVEEDIT";
+export const API_TRAVEL = "http://localhost:5000/api/v1/travel";
+export const API_USER = "http://localhost:5000/api/v1/user";
+export const LOGIN = "LOGIN";
+export const REGISTER = "REGISTER";
+export const GETALLPOST = "GETALLPOST";
+export const CLEARUSER = "CLEARUSER";
+export const GETTITLE = "GETTITLE";
+export const STARTLOADING = "STARTLOADING";
+export const ENDLOADING = "ENDLOADING";
+// https://infinite-beach-28131.herokuapp.com/api/v1/travel
