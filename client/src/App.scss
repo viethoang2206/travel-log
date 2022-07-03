@@ -57,5 +57,17 @@
     .loading{
       margin-top: 50px;
     }
+        .message {
+          height: 150px;
+          margin-bottom: 20px;
+          overflow:auto;
+          button {
+            color: rgba(0, 115, 255, 0.895);
+            background-color: white;
+            display: inline;
+            cursor: pointer;
+          }
+        }
+    
     
 }

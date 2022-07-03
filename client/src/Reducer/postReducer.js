@@ -8,6 +8,7 @@ import {
   GETTITLE,
   STARTLOADING,
   ENDLOADING,
+  GETSINGLEPOST,
 } from "../actions/type";
 const newPost = {};
 const allPost = {
@@ -26,42 +27,41 @@ const postReducer = (state = allPost, action) => {
     case SUBMIT:
       const { payload, value } = action;
       console.log(payload);
-      return { ...state, post: payload };
+
+      return { ...state, post: [...state.post, ...payload] };
 
     case GETPOST:
       const { newTravel } = action;
 
       return { ...state, post: newTravel };
-    case SAVEEDIT:
-      const { post } = action;
-      const postID = post.id;
-      const { message, title, tag } = post;
-      console.log(tag);
-      const newTag = tag
-        .join()
-        .split(",")
-        .map((val) => {
-          return (val = "#" + val);
-        });
-      const newState = state.filter((val) => {
-        if (val._id === postID) {
-          val.message = message;
-          val.title = title;
-          val.tags = newTag;
-        }
-        return val;
-      });
-      console.log(newState);
-      return { ...state, post: newState };
+    // case SAVEEDIT:
+    //   const { newPost } = action;
+    //   const postID = newPost.id;
+    //   const { message, title, tag } = newPost;
+    //   console.log(tag);
+    //   const newTag = tag.map((val) => {
+    //     return (val = "#" + val);
+    //   });
+    //   console.log(newTag);
+    //   const newState = state.post.filter((val) => {
+    //     if (val._id === postID) {
+    //       val.message = message;
+    //       val.title = title;
+    //       val.tags = newTag;
+    //     }
+    //     return val;
+    //   });
+    //   console.log(newState);
+    //   return { ...state, post: newState };
     case DELETEPOST:
       const { id } = action;
-      const delPost = state.filter((val) => val._id !== id);
+      const delPost = state.post.filter((val) => val._id !== id);
       return { ...state, post: delPost };
     case INC:
       const countID = action.id;
       const count = action.newCount;
 
-      const countState = state.filter((val) => {
+      const countState = state.post.filter((val) => {
         if (val._id === countID) {
           val.likeCount = count;
         }
@@ -74,7 +74,9 @@ const postReducer = (state = allPost, action) => {
       console.log(action.post);
 
       return { ...state, post: action.post };
-
+    case GETSINGLEPOST:
+      const { singlePost } = action;
+      return { ...state, post: singlePost };
     default:
       return state;
   }

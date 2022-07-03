@@ -50,7 +50,7 @@ exports.createTravel = async (req, res) => {
 exports.editTravel = async (req, res) => {
   const { id } = req.params;
   const { title, message, tags, selectedFile } = req.body;
-  const user = Travel.find({ _id: id });
+  const travel = Travel.find({ _id: id });
   Travel.findByIdAndUpdate({ _id: id }, { title, message, tags }).catch(
     (err) => {
       res.status(400).json({
@@ -61,7 +61,7 @@ exports.editTravel = async (req, res) => {
   );
   res.json({
     success: true,
-    message: "updated",
+    message: travel,
   });
 };
 exports.deleteTravel = async (req, res) => {
@@ -80,10 +80,12 @@ exports.deleteTravel = async (req, res) => {
 };
 exports.updateTravel = async (req, res) => {
   const { id } = req.params;
-  const { creator, title, message, tags } = req.body;
-  await Travel.findByIdAndUpdate(
+  const { creator, title, message, tag } = req.body;
+  console.log("chim");
+  console.log(tag);
+  const travel = await Travel.findByIdAndUpdate(
     { _id: id },
-    { creator, title, message, tags }
+    { creator, title, message, tags: tag }
   ).catch((err) => {
     return res.status(404).json({
       success: false,
@@ -92,13 +94,13 @@ exports.updateTravel = async (req, res) => {
   });
   res.json({
     success: true,
-    mess: "item has been updated",
+    message: travel,
   });
 };
 exports.updateCount = async (req, res) => {
   const { id } = req.params;
   const { count } = req.body;
-
+  console.log("chim coumt");
   Travel.findByIdAndUpdate({ _id: id }, { likeCount: count }).catch((err) => [
     res.status(404).json({
       success: fail,
@@ -111,14 +113,38 @@ exports.updateCount = async (req, res) => {
   });
 };
 exports.findTitle = async (req, res) => {
-  const { searchQuery } = req.query;
-  const post = await Travel.find({ title: searchQuery }).catch((err) => {
+  const { searchQuery, tags } = req.query;
+  console.log(tags);
+  console.log(tags.split(","));
+  const title = new RegExp(searchQuery, "i");
+  const posted = await Travel.find({
+    title,
+  });
+  const posts = await Travel.find({
+    tags: { $in: tags.split(",") },
+  });
+  const post = await Travel.find({
+    $or: [{ title: title }, { tags: { $in: tags.split(",") } }],
+  }).catch((err) => {
     res.status(404).json({
       success: false,
       message: "Post does not exist",
     });
   });
 
+  res.json({
+    success: true,
+    message: post,
+  });
+};
+exports.findSinglePost = async (req, res) => {
+  const { id } = req.params;
+  const post = await Travel.find({ _id: id }).catch((err) => {
+    res.status(404).json({
+      success: false,
+      message: "can not find post",
+    });
+  });
   res.json({
     success: true,
     message: post,

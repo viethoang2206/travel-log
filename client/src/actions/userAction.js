@@ -18,6 +18,7 @@ import {
   GETTITLE,
   STARTLOADING,
   ENDLOADING,
+  GETSINGLEPOST,
 } from "./type";
 
 const dateConvert = (array) => {
@@ -55,7 +56,7 @@ const submit = (value) => async (dispatch) => {
   const { _id, lastname, firstname } = user;
   console.log(tag);
   const newTag = tag.split(",").map((val) => {
-    return (val = "#" + val);
+    return val;
   });
   const token = localStorage.getItem("token");
   const post = {
@@ -133,15 +134,22 @@ const deletePost = (id) => async (dispatch) => {
     });
 };
 const editPost =
-  ({ findPost, editState }) =>
+  ({ findPost, editState, currentUser }) =>
   (dispatch) => {
-    dispatch({ type: EDITPOST, findPost, editState });
+    dispatch({ type: EDITPOST, findPost, editState, currentUser });
   };
-const saveEditPost = (post) => async (dispatch) => {
+const saveEditPost = (post, currentUser) => async (dispatch) => {
   const token = localStorage.getItem("token");
   const id = post.id;
   const url = `${API_TRAVEL}/${id}`;
   console.log(post);
+  const { tag } = post;
+  console.log(tag);
+  // const newTag = tag.split(",").map((val) => {
+  //   return val;
+  // });
+  const newPost = { ...post };
+  console.log(newPost);
   const response = await axios
     .patch(url, post, {
       headers: { Authorization: `Bearer ${token}` },
@@ -150,12 +158,12 @@ const saveEditPost = (post) => async (dispatch) => {
       console.log(err);
     })
     .then((res) => {
-      dispatch({ type: SAVEEDIT, post });
+      dispatch(getPost(currentUser));
     });
 };
 const incCount = (id, count) => async (dispatch) => {
   const token = localStorage.getItem("token");
-  const url = `${API_TRAVEL}/${id}`;
+  const url = `${API_TRAVEL}/inc/${id}`;
   const newCount = count + 1;
   await axios
     .patch(
@@ -217,9 +225,11 @@ const clearUser = () => (dispatch) => {
   console.log("chim clear");
   dispatch({ type: CLEARUSER, payload: null });
 };
-const getSearch = (value) => async (dispatch) => {
-  console.log(value);
-  const url = `${API_TRAVEL}/post/search?searchQuery=${value}`;
+const getSearch = (searchQuery, tags) => async (dispatch) => {
+  console.log(searchQuery);
+  const url = `${API_TRAVEL}/post/search?searchQuery=${
+    searchQuery || "none"
+  }&tags=${tags.join(",")}`;
   console.log(url);
   const resposne = await axios
     .get(url)
@@ -237,7 +247,25 @@ const startLoading = () => (dispatch) => {
 const endLoading = () => (dispatch) => {
   dispatch({ type: ENDLOADING });
 };
+const getSinglePost = (id) => async (dispatch) => {
+  dispatch(startLoading());
+  const url = `${API_TRAVEL}/post/${id}`;
+  const response = await axios
+    .get(url)
+    .catch((err) => {
+      alert(err);
+    })
+    .then((res) => {
+      console.log(res);
+      dispatch({
+        type: GETSINGLEPOST,
+        singlePost: dateConvert(res.data.message),
+      });
+      dispatch(endLoading());
+    });
+};
 export {
+  getSinglePost,
   endLoading,
   startLoading,
   getSearch,

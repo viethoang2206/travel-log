@@ -9,6 +9,7 @@ const {
   updateCount,
   getAllTravel,
   findTitle,
+  findSinglePost,
 } = require("../controllers/travelController");
 const router = express.Router();
 
@@ -19,4 +20,5 @@ router.post("/", verifyUser, createTravel);
 router.patch("/:id", verifyTravel, updateTravel);
 router.delete("/:id", verifyTravel, deleteTravel);
 router.patch("/inc/:id", verifyTravel, updateCount);
+router.get("/post/:id", findSinglePost);
 module.exports = router;

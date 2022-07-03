@@ -3,9 +3,9 @@ const post = {};
 const editReducer = (state = post, action) => {
   switch (action.type) {
     case EDITPOST:
-      const { findPost, editState } = action;
+      const { findPost, editState, currentUser } = action;
       console.log(findPost);
-      return { ...post, findPost, editState };
+      return { ...post, findPost, editState, currentUser };
     default:
       return { ...post };
   }
