@@ -69,5 +69,15 @@
           }
         }
     
-    
+    .single-info{
+      cursor: pointer;
+    }
+    .notice{
+      padding: 10px 10px;
+      button{
+        background-color:white ;
+        text-decoration: underline;
+      }
+    }
+        
 }

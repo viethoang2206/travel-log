@@ -1,20 +1,22 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { API_TRAVEL } from "../../actions/type";
+
 import { LikeOutlined } from "@ant-design/icons";
-import { Col, Row, Spin } from "antd";
-import Content from "../Content/Content";
-import { getAllPost, getSinglePost } from "../../actions/userAction";
+import { Col, Form, Row, Spin } from "antd";
+
+import {
+  getAllPost,
+  getSearch,
+  getSinglePost,
+  incCount,
+} from "../../actions/userAction";
 import Search from "../Search/Search";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import "./Home.scss";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.userReducer);
 
-  const [loading, setLoading] = useState([]);
   const { post, isLoading } = useSelector((state) => state.postReducer);
   useEffect(() => {
     dispatch(getAllPost());
@@ -37,6 +39,14 @@ const Home = () => {
       </div>
     );
   };
+  const searchPost = (search, tags) => {
+    console.log(search);
+    navigate({
+      pathname: "/",
+      search: `searchQuery=${search || "none"}&tags=${tags.join(",")} `,
+    });
+    dispatch(getSearch(search, tags));
+  };
   return (
     <div className="container">
       {isLoading ? (
@@ -47,20 +57,20 @@ const Home = () => {
             <Row className="row" gutter={[24, 24]}>
               {post.length ? (
                 post.map((val) => (
-                  <Col
-                    key={val._id}
-                    className="item"
-                    span={6}
-                    // onClick={() => navSinglePost(val._id)}
-                  >
+                  <Col key={val._id} className="item" span={6}>
                     <div className="item-info">
-                      <div className="img-container">
-                        <img src={val.selectedFile} alt="" />
-                      </div>
+                      <div
+                        onClick={() => navSinglePost(val._id)}
+                        className="single-info"
+                      >
+                        <div className="img-container">
+                          <img src={val.selectedFile} alt="" />
+                        </div>
 
-                      <div className="upload-info">
-                        <h3>{val.creator}</h3>
-                        <h3>{val.createdAt} days ago</h3>
+                        <div className="upload-info">
+                          <h3>{val.creator}</h3>
+                          <h3>{val.createdAt} days ago</h3>
+                        </div>
                       </div>
 
                       <div className="post-info">
@@ -75,7 +85,11 @@ const Home = () => {
                         <MessageItem message={val.message} />
                         <div className="icons">
                           <div className="like">
-                            <button>
+                            <button
+                              onClick={() =>
+                                dispatch(incCount(val._id, val.likeCount))
+                              }
+                            >
                               <LikeOutlined />
                               Like {val.likeCount}
                             </button>
@@ -90,7 +104,18 @@ const Home = () => {
               )}
             </Row>
           </div>
-          <Search className="search content"></Search>
+          <footer>
+            <Search
+              searchPorst={searchPost}
+              className="search content"
+            ></Search>
+            <div className=" form-container notice">
+              <p>
+                If you want to post your own memory, please{" "}
+                <button onClick={() => navigate("/login")}>Log in</button>{" "}
+              </p>
+            </div>
+          </footer>
         </div>
       )}
     </div>

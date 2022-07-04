@@ -1,13 +1,10 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Register from "../components/Content/Register/Register";
+
 import {
   SUBMIT,
   GETPOST,
   DELETEPOST,
   EDITPOST,
-  SAVEEDIT,
   INC,
   API_TRAVEL,
   API_USER,
@@ -38,7 +35,7 @@ const dateConvert = (array) => {
 const getAllPost = () => async (dispatch) => {
   const url = API_TRAVEL;
   dispatch(startLoading());
-  const response = await axios
+  await axios
     .get(url)
     .catch((err) => {
       console.log(err);
@@ -52,7 +49,7 @@ const getAllPost = () => async (dispatch) => {
 };
 const submit = (value) => async (dispatch) => {
   console.log(value);
-  const { creator, title, message, tag, upload, user } = value;
+  const { title, message, tag, upload, user } = value;
   const { _id, lastname, firstname } = user;
   console.log(tag);
   const newTag = tag.split(",").map((val) => {
@@ -95,7 +92,7 @@ const submit = (value) => async (dispatch) => {
 const getPost = (currentUser) => async (dispatch) => {
   const url = `${API_TRAVEL}/${currentUser._id}`;
   dispatch(startLoading());
-  const response = await axios
+  await axios
     .get(url)
     .catch((err) => {
       console.log(err.message);
@@ -145,12 +142,10 @@ const saveEditPost = (post, currentUser) => async (dispatch) => {
   console.log(post);
   const { tag } = post;
   console.log(tag);
-  // const newTag = tag.split(",").map((val) => {
-  //   return val;
-  // });
+
   const newPost = { ...post };
   console.log(newPost);
-  const response = await axios
+  await axios
     .patch(url, post, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -166,13 +161,7 @@ const incCount = (id, count) => async (dispatch) => {
   const url = `${API_TRAVEL}/inc/${id}`;
   const newCount = count + 1;
   await axios
-    .patch(
-      url,
-      { count: newCount },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    )
+    .patch(url, { count: newCount })
     .catch((err) => {
       console.log(err);
     })
@@ -202,9 +191,8 @@ const registerUser = (values, navigate) => async (dispatch) => {
   }
 };
 const login = (values, navigate) => async (dispatch) => {
-  const { username, passowrd } = values;
   console.log(values);
-  const response = await axios
+  await axios
     .post(`${API_USER}/login`, values)
     .catch((err) => {
       alert(err);
@@ -216,7 +204,7 @@ const login = (values, navigate) => async (dispatch) => {
       if (res.data.success) {
         dispatch({ type: LOGIN, payload: res.data.data });
 
-        navigate("/content");
+        navigate(`/${res.data.data.lastname}${res.data.data.firstname}`);
       }
       return res;
     });
@@ -231,7 +219,7 @@ const getSearch = (searchQuery, tags) => async (dispatch) => {
     searchQuery || "none"
   }&tags=${tags.join(",")}`;
   console.log(url);
-  const resposne = await axios
+  await axios
     .get(url)
     .catch((err) => {
       console.log(err);
@@ -250,7 +238,7 @@ const endLoading = () => (dispatch) => {
 const getSinglePost = (id) => async (dispatch) => {
   dispatch(startLoading());
   const url = `${API_TRAVEL}/post/${id}`;
-  const response = await axios
+  await axios
     .get(url)
     .catch((err) => {
       alert(err);

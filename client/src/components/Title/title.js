@@ -33,7 +33,17 @@ const Title = () => {
           <div className="login-info">
             <p className="firstname">{currentUser.lastname}</p>
             <p className="lastname">{currentUser.firstname}</p>
-            <button onClick={userHandle}>Log out</button>
+            <button className="log-out" onClick={userHandle}>
+              Log out
+            </button>
+            <button
+              className="user-info"
+              onClick={() =>
+                navigate(`/${currentUser.lastname}${currentUser.firstname}`)
+              }
+            >
+              Back to my post
+            </button>
           </div>
         ) : (
           <button className="login-nav" onClick={() => navigate("/login")}>

@@ -16,14 +16,7 @@ function App() {
       <Title></Title>
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route
-          path="/content"
-          element={
-            <ProtectedRoute>
-              <Content></Content>
-            </ProtectedRoute>
-          }
-        ></Route>
+        <Route path="/:name" element={<Content />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/post/:id" element={<SinglePost />}></Route>
         <Route path="/register" element={<Register />}></Route>

@@ -1,34 +1,24 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getSearch } from "../../actions/userAction";
+
+import { useLocation } from "react-router-dom";
+
 import "./search.scss";
 const { Form, Input, Button } = require("antd");
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
-const Search = () => {
-  const navigate = useNavigate();
+const Search = ({ searchPost }) => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
+
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
   const [formLayout, setFormLayout] = useState("vertical");
   const query = useQuery();
-  const location = useLocation();
+
   const searchQuery = query.get("searchQuery");
 
-  const searchPost = () => {
-    console.log(search);
-    dispatch(getSearch(search, tags));
-    navigate({
-      pathname: "/",
-      search: `searchQuery=${search || "none"}&tags=${tags.join(",")} `,
-    });
-    console.log(location);
-    console.log(query);
-    console.log(searchQuery);
-  };
+  //console.log(searchPorst);
+
   const converTag = (value) => {
     const newTag = value.split().join().split(",");
     setTags(newTag);
@@ -60,7 +50,7 @@ const Search = () => {
             placeholder="Search tag"
           />
         </Form.Item>
-        <Button onClick={() => searchPost()}>Search</Button>
+        <Button onClick={() => searchPost(searchQuery, tags)}>Search</Button>
       </Form>
     </div>
   );

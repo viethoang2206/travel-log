@@ -19,6 +19,6 @@ router.get("/post/search", findTitle);
 router.post("/", verifyUser, createTravel);
 router.patch("/:id", verifyTravel, updateTravel);
 router.delete("/:id", verifyTravel, deleteTravel);
-router.patch("/inc/:id", verifyTravel, updateCount);
+router.patch("/inc/:id", updateCount);
 router.get("/post/:id", findSinglePost);
 module.exports = router;
