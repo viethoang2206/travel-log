@@ -22,11 +22,9 @@ const postReducer = (state = allPost, action) => {
     case ENDLOADING:
       return { ...state, isLoading: false };
     case GETALLPOST:
-      console.log(action.payload);
       return { ...state, post: action.payload };
     case SUBMIT:
       const { payload, value } = action;
-      console.log(payload);
 
       return { ...state, post: [...state.post, ...payload] };
 
@@ -34,25 +32,6 @@ const postReducer = (state = allPost, action) => {
       const { newTravel } = action;
 
       return { ...state, post: newTravel };
-    // case SAVEEDIT:
-    //   const { newPost } = action;
-    //   const postID = newPost.id;
-    //   const { message, title, tag } = newPost;
-    //   console.log(tag);
-    //   const newTag = tag.map((val) => {
-    //     return (val = "#" + val);
-    //   });
-    //   console.log(newTag);
-    //   const newState = state.post.filter((val) => {
-    //     if (val._id === postID) {
-    //       val.message = message;
-    //       val.title = title;
-    //       val.tags = newTag;
-    //     }
-    //     return val;
-    //   });
-    //   console.log(newState);
-    //   return { ...state, post: newState };
     case DELETEPOST:
       const { id } = action;
       const delPost = state.post.filter((val) => val._id !== id);
@@ -70,9 +49,6 @@ const postReducer = (state = allPost, action) => {
 
       return { ...state, post: countState };
     case GETTITLE:
-      console.log(state);
-      console.log(action.post);
-
       return { ...state, post: action.post };
     case GETSINGLEPOST:
       const { singlePost } = action;

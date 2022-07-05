@@ -20,7 +20,6 @@ const Home = () => {
   const { post, isLoading } = useSelector((state) => state.postReducer);
   useEffect(() => {
     dispatch(getAllPost());
-    console.log(post);
   }, [dispatch]);
   const navSinglePost = (id) => {
     dispatch(getSinglePost(id));

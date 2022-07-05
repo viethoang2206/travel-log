@@ -41,7 +41,6 @@ const getAllPost = () => async (dispatch) => {
       console.log(err);
     })
     .then((res) => {
-      console.log(res);
       dispatch({ type: GETALLPOST, payload: dateConvert(res.data.travel) });
       dispatch(endLoading());
       return res;
@@ -214,7 +213,6 @@ const getSearch = (searchQuery, tags) => async (dispatch) => {
     })
     .then((res) => {
       dispatch({ type: GETTITLE, post: dateConvert(res.data.message) });
-      console.log(res);
     });
 };
 const startLoading = () => (dispatch) => {
