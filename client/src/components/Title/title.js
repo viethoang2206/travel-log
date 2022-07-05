@@ -9,7 +9,6 @@ const Title = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.userReducer);
   const userHandle = () => {
-    console.log("chime handle");
     dispatch(clearUser());
     navigate("/");
   };
@@ -17,14 +16,11 @@ const Title = () => {
     navigate("/");
     dispatch(getAllPost());
   };
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
+  useEffect(() => {}, [currentUser]);
 
   return (
     <div className="container">
       <div className="title">
-        {/* <button className="home-nav"></button> */}
         <div className="home-nav" onClick={() => homeNav()}>
           <h1>Memories</h1>
           <img src={pic} alt="" />

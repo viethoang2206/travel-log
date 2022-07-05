@@ -114,7 +114,7 @@ const deletePost = (id) => async (dispatch) => {
   const token = localStorage.getItem("token");
   const url = `${API_TRAVEL}/${id}`;
   dispatch(startLoading());
-  const response = await axios
+  await axios
     .delete(url, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -139,12 +139,6 @@ const saveEditPost = (post, currentUser) => async (dispatch) => {
   const token = localStorage.getItem("token");
   const id = post.id;
   const url = `${API_TRAVEL}/${id}`;
-  console.log(post);
-  const { tag } = post;
-  console.log(tag);
-
-  const newPost = { ...post };
-  console.log(newPost);
   await axios
     .patch(url, post, {
       headers: { Authorization: `Bearer ${token}` },
@@ -157,7 +151,6 @@ const saveEditPost = (post, currentUser) => async (dispatch) => {
     });
 };
 const incCount = (id, count) => async (dispatch) => {
-  const token = localStorage.getItem("token");
   const url = `${API_TRAVEL}/inc/${id}`;
   const newCount = count + 1;
   await axios
@@ -191,14 +184,12 @@ const registerUser = (values, navigate) => async (dispatch) => {
   }
 };
 const login = (values, navigate) => async (dispatch) => {
-  console.log(values);
   await axios
     .post(`${API_USER}/login`, values)
     .catch((err) => {
       alert(err);
     })
     .then((res) => {
-      console.log(res);
       localStorage.setItem("token", res.data.token);
 
       if (res.data.success) {
@@ -210,15 +201,12 @@ const login = (values, navigate) => async (dispatch) => {
     });
 };
 const clearUser = () => (dispatch) => {
-  console.log("chim clear");
   dispatch({ type: CLEARUSER, payload: null });
 };
 const getSearch = (searchQuery, tags) => async (dispatch) => {
-  console.log(searchQuery);
   const url = `${API_TRAVEL}/post/search?searchQuery=${
     searchQuery || "none"
   }&tags=${tags.join(",")}`;
-  console.log(url);
   await axios
     .get(url)
     .catch((err) => {
@@ -244,7 +232,6 @@ const getSinglePost = (id) => async (dispatch) => {
       alert(err);
     })
     .then((res) => {
-      console.log(res);
       dispatch({
         type: GETSINGLEPOST,
         singlePost: dateConvert(res.data.message),

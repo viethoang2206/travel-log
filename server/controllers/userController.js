@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { json } = require("body-parser");
+
 require("dotenv").config();
 exports.findUser = async (req, res) => {
   const { username, password } = req.body;

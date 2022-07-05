@@ -66,7 +66,6 @@ exports.editTravel = async (req, res) => {
 };
 exports.deleteTravel = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   Travel.findByIdAndDelete({ _id: id }).catch((err) => {
     json.status(400).json({
       success: false,
@@ -81,8 +80,6 @@ exports.deleteTravel = async (req, res) => {
 exports.updateTravel = async (req, res) => {
   const { id } = req.params;
   const { creator, title, message, tag } = req.body;
-  console.log("chim");
-  console.log(tag);
   const travel = await Travel.findByIdAndUpdate(
     { _id: id },
     { creator, title, message, tags: tag }
@@ -100,7 +97,6 @@ exports.updateTravel = async (req, res) => {
 exports.updateCount = async (req, res) => {
   const { id } = req.params;
   const { count } = req.body;
-  console.log("chim coumt");
   Travel.findByIdAndUpdate({ _id: id }, { likeCount: count }).catch((err) => [
     res.status(404).json({
       success: fail,
@@ -114,15 +110,7 @@ exports.updateCount = async (req, res) => {
 };
 exports.findTitle = async (req, res) => {
   const { searchQuery, tags } = req.query;
-  console.log(tags);
-  console.log(tags.split(","));
   const title = new RegExp(searchQuery, "i");
-  const posted = await Travel.find({
-    title,
-  });
-  const posts = await Travel.find({
-    tags: { $in: tags.split(",") },
-  });
   const post = await Travel.find({
     $or: [{ title: title }, { tags: { $in: tags.split(",") } }],
   }).catch((err) => {

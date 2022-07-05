@@ -17,8 +17,6 @@ const Search = ({ searchPost }) => {
 
   const searchQuery = query.get("searchQuery");
 
-  //console.log(searchPorst);
-
   const converTag = (value) => {
     const newTag = value.split().join().split(",");
     setTags(newTag);

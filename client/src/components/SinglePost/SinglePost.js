@@ -1,11 +1,9 @@
 import { Spin } from "antd";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+
 import "./singlepost.scss";
 const SinglePost = () => {
-  //const { id } = useParams();
   const { isLoading, post } = useSelector((state) => state.postReducer);
-  console.log(post);
   return (
     <div className="container content">
       {isLoading ? (
