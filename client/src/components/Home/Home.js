@@ -105,10 +105,7 @@ const Home = () => {
             </Row>
           </div>
           <footer>
-            <Search
-              searchPorst={searchPost}
-              className="search content"
-            ></Search>
+            <Search searchPost={searchPost} className="search content"></Search>
             <div className=" form-container notice">
               <p>
                 If you want to post your own memory, please{" "}

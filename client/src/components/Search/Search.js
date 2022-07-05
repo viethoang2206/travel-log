@@ -4,15 +4,16 @@ import { useLocation } from "react-router-dom";
 
 import "./search.scss";
 const { Form, Input, Button } = require("antd");
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+
 const Search = ({ searchPost }) => {
   const [form] = Form.useForm();
 
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
   const [formLayout, setFormLayout] = useState("vertical");
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  };
   const query = useQuery();
 
   const searchQuery = query.get("searchQuery");
@@ -48,7 +49,7 @@ const Search = ({ searchPost }) => {
             placeholder="Search tag"
           />
         </Form.Item>
-        <Button onClick={() => searchPost(searchQuery, tags)}>Search</Button>
+        <Button onClick={() => searchPost(search, tags)}>Search</Button>
       </Form>
     </div>
   );
